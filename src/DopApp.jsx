@@ -156,11 +156,12 @@ export function randomColor() {
   );
   };*/
 
-  const DopApp = (props) => {
-    console.log('DopApp rendering')
-    const { messages, currentMember, onSendMessage } = props;
-    const location = useLocation();
-    const { randomID } = useParams();
+const DopApp = (props) => {
+  console.log("Pssing nickname from APP to DoAPp " + props.nickname)
+  console.log('DopApp rendering')
+  const { messages, currentMember, onSendMessage } = props;
+  const location = useLocation();
+  const { randomID } = useParams();
   const params = new URLSearchParams(location.search);
 
   const nickname = params.get('nickname') || 'anonymous';
@@ -168,6 +169,7 @@ export function randomColor() {
     <div className="App">
       <div className="App-header">
         <h1>DopApp</h1>
+        <h3>You are chatting with {props.nickname}</h3>
       </div>
       <Messages messages={messages} currentMember={nickname} />
       <Input onSendMessage={onSendMessage} />
@@ -175,4 +177,4 @@ export function randomColor() {
   );
 }
 
-export {DopApp};
+export { DopApp };

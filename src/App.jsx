@@ -1,4 +1,4 @@
-import React, {Component, useRef, useState, useEffect } from 'react';
+import React, { Component, useRef, useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import "./App.css";
 import user from './images/user.png';
@@ -24,11 +24,13 @@ const App = () => {
   function handleJoinChat(nickname) {
     setNickname(nickname);
   }
+
   const [currentMember, setCurrentMember] = useState({
     username: nickname,
     avatar: randomColor(),
     id: "",
   });
+
 
   const drone = new window.Scaledrone("OKoLR1ZgZTNHMeUZ", {
     data: currentMember,
@@ -40,7 +42,7 @@ const App = () => {
       username: Landing.nickname,
     }));
   }, []);
-  
+
   useEffect(() => {
     drone.on("open", (error) => {
       if (error) {
@@ -56,7 +58,7 @@ const App = () => {
     const room = drone.subscribe("observable-room");
     room.on("data", (member) => {
       console.log(member);
-      const newMessage = {member: currentMember, text: member };
+      const newMessage = { member: currentMember, text: member };
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
     drone.on("error", (error) => {
@@ -76,8 +78,8 @@ const App = () => {
   return (
     <Router>
       <Routes>
-      <Route path="/DopApp" element={<DopApp messages={messages} currentMember={currentMember} onSendMessage={onSendMessage} nickname={nickname} />} />
-      <Route path="/" element={<Landing currentMember={currentMember} setCurrentMember={setCurrentMember}  />} />
+        <Route path="/DopApp" element={<DopApp messages={messages} currentMember={currentMember} onSendMessage={onSendMessage} nickname={nickname} />} />
+        <Route path="/" element={<Landing currentMember={currentMember} setCurrentMember={setCurrentMember} nickname={nickname} setNickname={setNickname} />} />
       </Routes>
     </Router>
   )

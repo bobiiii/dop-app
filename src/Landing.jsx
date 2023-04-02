@@ -1,11 +1,11 @@
-import React, {Component, useRef, useState, createRef, createContext} from 'react';
+import React, { Component, useEffect, useRef, useState, createRef, createContext } from 'react';
 import { Link, useNavigate, useLocation, useHistory } from "react-router-dom";
 import './App.css';
 import girl from './images/girl.png';
 import man from './images/man.png';
 import logo from './images/logo.png';
 import Input from './Input';
-import { 
+import {
   BrowserRouter as Router,
   Route,
   Routes
@@ -15,8 +15,10 @@ import DopApp from "./DopApp";
 
 
 const Landing = (props) => {
+  const nickname = props.nickname
+  const setNickname = props.setNickname
+
   console.log('landing rendering')
-  const [nickname, setNickname] = useState('');
   const [avatar, setAvatar] = useState("👧");
   const [error, setError] = useState("");
   const nameRef = useRef();
@@ -24,22 +26,32 @@ const Landing = (props) => {
   const [currentMember, setCurrentMember] = useState()
   const navigate = useNavigate();
 
-  const handleNicknameChange = (event) => {
-    setNickname(event.target.value);
-  }
+
+  useEffect(() => {
+    console.log(nameRef.current.value)
+
+  }, [])
+
+
+  // const handleNicknameChange = (event) => {
+
+  // }
 
   const handleSubmit = (event) => {
     event.preventDefault();
+    console.log(nickname)
+    console.log("if handelsubmit")
+    setNickname(nameRef.current.value)
+    console.log(nickname)
+    setCurrentMember({ nickname, avatar, randomId });
+    navigate("/DopApp", { state: { nickname } });
+
+
 
   }
   const handleJoinChat = (e) => {
-    e.preventDefault();
-  if (nickname) {
-    setCurrentMember({ nickname, avatar, randomId });
-    navigate("/DopApp");
-  } else {
-    setError("Upišite svoj nadimak!");
-  }
+
+
   };
 
   const selectRandomAvatar = (e) => {
@@ -50,16 +62,12 @@ const Landing = (props) => {
     // TODO: Implement the logic for selecting a random avatar
   };
 
-  const joinChat = (e) => {
-    e.preventDefault();
-  if (nickname) {
-    navigate("/DopApp", { state: { nickname } });
-  } else {
-    setError("Upišite svoj nadimak!");
-  }
+  // const joinChat = (e) => {
+  //   e.preventDefault();
 
 
-  };
+
+  // };
 
   return (
     <div className="App">
@@ -68,13 +76,13 @@ const Landing = (props) => {
       </h1>
       <div className="Name-form">
         <form onSubmit={handleSubmit}>
-        <input
-        type="text"
-        value={nickname}
-        onChange={handleNicknameChange}
-        placeholder="Enter your username"
-      />
-          <button onClick={joinChat} type="submit">Pridruži se</button>
+          <input
+            type="text"
+            ref={nameRef}
+            onChange={() => { }}
+            placeholder="Enter your username"
+          />
+          <button type="submit">Pridruži se</button>
         </form>
         {error && <div className="error">{error}</div>}
       </div>
